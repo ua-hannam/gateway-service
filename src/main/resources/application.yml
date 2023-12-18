@@ -13,9 +13,9 @@ spring:
 #          predicates:
 #            - Method=GET
       default-filters:
-        - name: DefaultFilter
+        - name: GlobalFilter
           args:
-            baseMessage: Default Filter
+            baseMessage: Global Filter
             preLogger: true
             postLogger: true
 
