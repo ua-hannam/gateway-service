@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+#        - id: first-service
+#          uri: lb://first-service
+#          predicates:
+#            - Method=GET
+#        - id: second-service
+#          uri: lb://second-service
+#          predicates:
+#            - Method=GET
+      default-filters:
+        - name: DefaultFilter
+          args:
+            baseMessage: Default Filter
+            preLogger: true
+            postLogger: true
+
+server:
+  port: 8000
