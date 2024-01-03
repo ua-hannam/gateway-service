@@ -23,6 +23,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
+            log.info("=============================================");
             log.info("Default Filter Message : {}", config.getBaseMessage());
 
             if (config.isPreLogger())
@@ -31,8 +32,9 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             // Default Logging Post Filter
             return chain.filter(exchange)
                     .then(Mono.fromRunnable(() -> {
-                        if (config.isPostLogger())
+                        if (config.isPostLogger()) {
                             log.info("Default Filter End: response code -> {}", response.getStatusCode());
+                        }
                     }))
                     .doOnError(ex -> {
                         log.error("Error During Processing : ", ex);
