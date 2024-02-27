@@ -1,4 +1,4 @@
-name: BackEnd - CI
+name: BackEnd - CI/CD
 on:
   push:
     branches:
@@ -82,7 +82,7 @@ jobs:
         with:
           status: success
           author_name: CI Monitoring_bot
-          fields: repo,message,commit,eventName,ref,workflow,author
+          fields: repo,message,commit,eventName,ref,workflow,author,took
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -96,7 +96,7 @@ jobs:
         with:
           status: failure
           author_name: CI Monitoring_bot
-          fields: repo,message,commit,eventName,ref,workflow,author
+          fields: repo,message,commit,eventName,ref,workflow,author,took
           if_mention: always
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
