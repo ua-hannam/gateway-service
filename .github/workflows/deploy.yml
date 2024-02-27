@@ -21,7 +21,7 @@ jobs:
       - name: Set Yaml
         uses: microsoft/variable-substitution@v1
         with:
-          files: ./src/main/resources/application.yml
+          files: ./src/main/resources/bootstrap.yml
         env:
           spring.cloud.config.uri: http://${{ secrets.DEVSEO_SERVER_PUBLIC_IP }}:9999
 
