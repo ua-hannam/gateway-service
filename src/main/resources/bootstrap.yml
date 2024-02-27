@@ -4,6 +4,6 @@ spring:
   cloud:
     config:
       name: config
-      uri: http://211.205.161.133:9999
+      uri:
   profiles:
-    active: gateway-dev
+    active: gateway-prod
