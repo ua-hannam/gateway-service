@@ -1,4 +1,4 @@
 package uahannam.gatewayservice.filters;
 
-public class CheckJwtFilter {
+public class JwtFilter {
 }
