@@ -26,13 +26,13 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
             log.info("=============================================");
             log.info("Default Filter Message : {}", config.getBaseMessage());
 
-            if (config.isPreLogger())
+            if (config.isPre())
                 log.info("Default Filter Start: request id -> {}", request.getId());
 
             // Default Logging Post Filter
             return chain.filter(exchange)
                     .then(Mono.fromRunnable(() -> {
-                        if (config.isPostLogger()) {
+                        if (config.isPost()) {
                             log.info("Default Filter End: response code -> {}", response.getStatusCode());
                         }
                     }))
@@ -46,7 +46,7 @@ public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Conf
     @Data
     public static class Config {
         private String baseMessage;
-        private boolean preLogger;
-        private boolean postLogger;
+        private boolean pre;
+        private boolean post;
     }
 }
