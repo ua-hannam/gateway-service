@@ -6,10 +6,10 @@ spring:
       routes:
         - id: member-service
           uri: lb://MEMBER-SERVICE # Eureka를 사용하는 경우
-          predicates:
-            - Path=/members/** # 모든 /members 경로를 포함
+          predicates: # Method predicate 까지 있었다면, "/members/** && (Method=GET 일 경우)GET" 이여야만 라우팅 해준다.
+            - Path=/members/**, /points/** # 모든 /members 경로를 포함
           filters:
-          # 필터 설정이 필요하다면 여기에 추가
+          # 필터 설정이 필요하다면 여기에 추가, ex) 인증/인가
       default-filters:
         - name: GlobalFilter
           args:
