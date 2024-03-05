@@ -49,7 +49,7 @@ public class JwtFilter extends AbstractGatewayFilterFactory<JwtFilter.Config> {
     }
 
     private void setCustomHeader(ServerHttpRequest request, String token) {
-        request.mutate().header("X-CUSTOM-USER",
+        request.mutate().header("X-CUSTOM-USER-ID",
                 jwtUtil.extractUserId(token));
     }
 
