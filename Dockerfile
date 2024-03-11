@@ -1,7 +1,4 @@
-FROM amazoncorretto:17-alpine
-
-ARG JAR_FILE=build/libs/gateway-service-0.0.1-SNAPSHOT.jar
-
-COPY ${JAR_FILE} gatewayService.jar
-
-CMD ["java", "-jar", "-Duser.timezone=Asia/Seoul", "gatewayService.jar"]
+FROM openjdk:17-ea-11-jdk-slim
+VOLUME /tmp
+COPY build/libs/*.jar gatewayService.jar
+ENTRYPOINT ["java", "-jar", "gatewayService.jar"]
