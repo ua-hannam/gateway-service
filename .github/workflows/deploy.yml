@@ -81,30 +81,30 @@ jobs:
 #      - name: Delete Old Docker Image
 #        run: docker images | grep '${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO }}/${{ env.SERVICE_NAME }}' | grep '<none>' |awk '{print $3}' | xargs -r docker rmi
 
-  notify_success:
-    needs: [ build_and_push, run_docker_image ]
-    runs-on: ubuntu-latest
-    if: success()
-    steps:
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: success
-          author_name: CI Monitoring_bot
-          fields: repo,message,commit,eventName,ref,workflow,author,took
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-  notify_failure:
-    needs: [ build_and_push, run_docker_image ]
-    runs-on: ubuntu-latest
-    if: failure()
-    steps:
-      - uses: 8398a7/action-slack@v3
-        with:
-          status: failure
-          author_name: CI Monitoring_bot
-          fields: repo,message,commit,eventName,ref,workflow,author,took
-          if_mention: always
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#  notify_success:
+#    needs: [ build_and_push, run_docker_image ]
+#    runs-on: ubuntu-latest
+#    if: success()
+#    steps:
+#      - uses: 8398a7/action-slack@v3
+#        with:
+#          status: success
+#          author_name: CI Monitoring_bot
+#          fields: repo,message,commit,eventName,ref,workflow,author,took
+#          if_mention: always
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#
+#  notify_failure:
+#    needs: [ build_and_push, run_docker_image ]
+#    runs-on: ubuntu-latest
+#    if: failure()
+#    steps:
+#      - uses: 8398a7/action-slack@v3
+#        with:
+#          status: failure
+#          author_name: CI Monitoring_bot
+#          fields: repo,message,commit,eventName,ref,workflow,author,took
+#          if_mention: always
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
