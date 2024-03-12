@@ -53,7 +53,7 @@ jobs:
 #          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO }}/${{ env.SERVICE_NAME }}:latest .
 
   run_docker_image:
-    needs: build_and_push
+#    needs: build_and_push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
