@@ -71,7 +71,7 @@ jobs:
 
       - name: Deploy
         run: |-
-          gcloud compute instances update-container "${{ secrets.GCE_INSTANCE_ID }}" \
+          gcloud compute instances update-container "${{ secrets.GCE_INSTANCE_NAME }}" \
             --zone "${{ secrets.GCE_INSTANCE_ZONE }}" \
             --container-image "$DOCKER_REPOSITORY:latest"
 
