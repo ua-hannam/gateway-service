@@ -5,8 +5,7 @@ on:
       - main
 
 env:
-  DOCKER_REPOSITORY: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}
-  SERVICE_NAME: gateway-service
+  DOCKER_REPOSITORY: ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service
 
 jobs:
   build_and_push:
