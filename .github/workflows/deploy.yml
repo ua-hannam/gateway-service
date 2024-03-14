@@ -46,25 +46,16 @@ jobs:
         with:
           arguments: clean bootJar
 
-#  run_docker_image:
-#    runs-on: ubuntu-latest
-#    needs: build_and_push
-#    steps:
-      - name: Auth to GCP
-        uses: google-github-actions/auth@v2
+      - name: Login to Docker Registry
+        uses: docker/login-action@v1
         with:
-          credentials_json: ${{ secrets.GCP_SUNGMIN_SA_KEY }}
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-
-      - name: GCE Docker Authentication
-        run: gcloud --quiet auth configure-docker
-
-      - name: Build
+      - name: Build and Push to Dockerhub
         run: |
-          docker build -t ${{ env.SERVICE_NAME }}:latest .
-          pwd
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest .
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
 
 #      - name: Docker Stop Container
 #        run: docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/${{ env.SERVICE_NAME }}/{print $1}') 2>/dev/null || true
