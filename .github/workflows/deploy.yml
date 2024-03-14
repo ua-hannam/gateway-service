@@ -62,7 +62,9 @@ jobs:
         run: gcloud --quiet auth configure-docker
 
       - name: Build
-        run: docker build -t ${{ env.SERVICE_NAME }}:latest .
+        run: |
+          docker build -t ${{ env.SERVICE_NAME }}:latest .
+          pwd
 
 #      - name: Docker Stop Container
 #        run: docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/${{ env.SERVICE_NAME }}/{print $1}') 2>/dev/null || true
