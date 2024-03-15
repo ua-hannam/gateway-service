@@ -72,7 +72,7 @@ jobs:
       - name: Deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.GCE_GATEWAY_PUBLIC_IP }}
+          host: 34.47.96.243
           username: ${{ secrets.GCE_SSH_USERNAME }}
           key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
