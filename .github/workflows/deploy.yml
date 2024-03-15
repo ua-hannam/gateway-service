@@ -70,15 +70,16 @@ jobs:
 #        run: gcloud --quiet auth configure-docker
 
       - name: Deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 34.47.96.243
+          host: "34.47.96.243"
           username: ${{ secrets.GCE_SSH_USERNAME }}
           key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
-          port: 22
+#          port: 22
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+             whoami
+#            sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 #            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7}
 #            sudo docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7} 이미지이름
 #            sudo docker-compose up -d
