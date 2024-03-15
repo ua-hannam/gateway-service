@@ -58,17 +58,6 @@ jobs:
 #          docker build -t $DOCKER_REPOSITORY:latest .
 #          docker push $DOCKER_REPOSITORY:latest
 
-#      - name: Auth to GCP
-#        uses: google-github-actions/auth@v2
-#        with:
-#          credentials_json: ${{ secrets.GCP_SUNGMIN_SA_KEY }}
-#
-#      - name: Set up Cloud SDK
-#        uses: google-github-actions/setup-gcloud@v2
-#
-#      - name: GCE Docker Authentication
-#        run: gcloud --quiet auth configure-docker
-
       - name: Deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -77,8 +66,8 @@ jobs:
           key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
           script: |
             echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
-            sudo docker pull $DOCKER_REPOSITORY:latest
-            sudo docker run --name gateway-service --rm -d -p 8000:8000 $DOCKER_REPOSITORY:latest
+            sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
+            sudo docker run --name gateway-service --rm -d -p 8000:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
 
 #      - name: Docker Stop Container
 #        run: docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/${{ env.SERVICE_NAME }}/{print $1}') 2>/dev/null || true
