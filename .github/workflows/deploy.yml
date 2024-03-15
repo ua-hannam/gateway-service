@@ -75,8 +75,8 @@ jobs:
           host: 34.47.96.243
           username: ${{ secrets.GCE_SSH_USERNAME }}
           key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+          port: 22
 #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-#          envs: GITHUB_SHA
           script: |
             sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
 #            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7}
