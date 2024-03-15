@@ -8,7 +8,7 @@ env:
   DOCKER_REPOSITORY: ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service
 
 jobs:
-  build_and_push:
+  build_and_publish:
     name: Build and Publish
     runs-on: ubuntu-latest
     steps:
@@ -69,40 +69,32 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
             sudo docker stop $(sudo docker ps --format '{{.ID}} {{.Names}}' | awk '/gateway-service/{print $1}') 2>/dev/null || true
             sudo docker run --name gateway-service --rm -d -p 8000:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
+            sudo docker images | grep '${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service' | grep '<none>' |awk '{print $3}' | xargs -r sudo docker rmi
 
-#      - name: Docker Stop Container
-#        run: docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/${{ env.SERVICE_NAME }}/{print $1}') 2>/dev/null || true
-#
-#      - name: Docker Pull Image and Run New Container
-#        run: docker run --name ${{ env.SERVICE_NAME }} --rm -d -p 8000:8000 ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO }}/${{ env.SERVICE_NAME }}:latest
-#
-#      - name: Delete Old Docker Image
-#        run: docker images | grep '${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_REPO }}/${{ env.SERVICE_NAME }}' | grep '<none>' |awk '{print $3}' | xargs -r docker rmi
+  notify_success:
+    needs: [ build_and_publish ]
+    runs-on: ubuntu-latest
+    if: success()
+    steps:
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          author_name: CI Monitoring_bot
+          fields: repo,message,commit,eventName,ref,workflow,author,took
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-#  notify_success:
-#    needs: [ build_and_push, run_docker_image ]
-#    runs-on: ubuntu-latest
-#    if: success()
-#    steps:
-#      - uses: 8398a7/action-slack@v3
-#        with:
-#          status: success
-#          author_name: CI Monitoring_bot
-#          fields: repo,message,commit,eventName,ref,workflow,author,took
-#          if_mention: always
-#        env:
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-#
-#  notify_failure:
-#    needs: [ build_and_push, run_docker_image ]
-#    runs-on: ubuntu-latest
-#    if: failure()
-#    steps:
-#      - uses: 8398a7/action-slack@v3
-#        with:
-#          status: failure
-#          author_name: CI Monitoring_bot
-#          fields: repo,message,commit,eventName,ref,workflow,author,took
-#          if_mention: always
-#        env:
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  notify_failure:
+    needs: [ build_and_publish ]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          author_name: CI Monitoring_bot
+          fields: repo,message,commit,eventName,ref,workflow,author,took
+          if_mention: always
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
