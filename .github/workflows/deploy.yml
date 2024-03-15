@@ -70,10 +70,17 @@ jobs:
         run: gcloud --quiet auth configure-docker
 
       - name: Deploy
-        run: |-
-          gcloud compute instances update-container "${{ secrets.GCE_INSTANCE_NAME }}" \
-            --zone "${{ secrets.GCE_INSTANCE_ZONE }}" \
-            --container-image "$DOCKER_REPOSITORY:latest"
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GCE_GATEWAY_PUBLIC_IP }}
+          username: ${{ secrets.GCE_SSH_USERNAME }}
+          key: ${{ secrets.GCE_SSH_PRIVATE_KEY }}
+#          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}
+#            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7}
+#            sudo docker tag ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${GITHUB_SHA::7} 이미지이름
+#            sudo docker-compose up -d
 
 #      - name: Docker Stop Container
 #        run: docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/${{ env.SERVICE_NAME }}/{print $1}') 2>/dev/null || true
