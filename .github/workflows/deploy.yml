@@ -67,7 +67,7 @@ jobs:
           script: |
             echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | sudo docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
             sudo docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
-            sudo docker stop $(docker ps --format '{{.ID}} {{.Names}}' | awk '/gateway-service/{print $1}') 2>/dev/null || true
+            sudo docker stop $(sudo docker ps --format '{{.ID}} {{.Names}}' | awk '/gateway-service/{print $1}') 2>/dev/null || true
             sudo docker run --name gateway-service --rm -d -p 8000:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/gateway-service:latest
 
 #      - name: Docker Stop Container
